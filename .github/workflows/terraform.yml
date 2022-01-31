@@ -33,7 +33,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: List directory
-        run: 1s -a
+        run: ls -a
 
       - name: Terraform Init
         run: terraform init
