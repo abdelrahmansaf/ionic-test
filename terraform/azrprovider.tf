@@ -16,7 +16,7 @@ provider "azurerm" {
 terraform {
  backend "azurerm" {
     resource_group_name = "tform-sabdulrahman"
-    storage_account_name-="stgmyteststaccount"
+    storage_account_name = "stgmyteststaccount"
     container_name = "terraform-container"
     key="terraform.tfstate"
 
