@@ -1,7 +1,11 @@
 
 name: 'Terraform'
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+    - master
+  pull_request:
 
 defaults:
   run:
@@ -12,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-
       ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: ${{secrets.AZ_SUBID}}
       ARM_TENANT_ID: ${{secrets.AZ_TENANTID}}
       TF VAR_administrator_login: ${{secrets.TF_VAR_administrator_login}}
       TF VAR_administrator login_password: ${{secrets.TF_VAR_administrator_login_password}}
+
 
 
 
