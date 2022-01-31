@@ -15,7 +15,7 @@ jobs:
       ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: ${{secrets.AZ_SUBID}}
-      ARM_TENANT_ID: S{{secrets.AZ_TENANTID}}
+      ARM_TENANT_ID: ${{secrets.AZ_TENANTID}}
       TF VAR_administrator_login: ${{secrets.TF_VAR_administrator_login}}
       TF VAR_administrator login_password: ${{secrets.TF_VAR_administrator_login_password}}
 
