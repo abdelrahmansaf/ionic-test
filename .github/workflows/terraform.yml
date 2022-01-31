@@ -1,17 +1,18 @@
 
 name: 'Terraform'
 
-on:
-  push:
-    branches:
-    - master
-  pull_request:
+on: workflow_dispatch
+
+defaults:
+  run:
+    working-directory: ./terraform
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     env:
+
       ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: ${{secrets.AZ_SUBID}}
