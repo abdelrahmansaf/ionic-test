@@ -12,7 +12,6 @@ resource "azurerm_app_service_plan" "app_plan" {
 
 
 
-
 resource "azurerm_app_service" "web_app_1" {
   name                = "cocofofowebappliappli"
   location            = "westeurope"
