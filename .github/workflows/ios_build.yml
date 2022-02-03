@@ -28,18 +28,18 @@ jobs:
 
       - name: Build archive
         run: |
-        xcodebuild -sdk iphoneos -project CocoaHeadsNL/CocoaHeadsNL.xcodeproj \
-        -configuration Release -scheme CocoaHeadsNL \
-        -derivedDataPath DerivedData \
-        -archivePath DerivedData/Archive/CocoaHeadsNL archive
+          xcodebuild -sdk iphoneos -project CocoaHeadsNL/CocoaHeadsNL.xcodeproj \
+            -configuration Release -scheme CocoaHeadsNL \
+            -derivedDataPath DerivedData \
+            -archivePath DerivedData/Archive/CocoaHeadsNL archive
 
 
       - name: Export Archive
         run: |
-        xcodebuild -exportArchive \
-        -archivePath DerivedData/Archive/CocoaHeadsNL.xcarchive \
-        -export0ptionsPlist provisioning/App-Store.plist \
-        -exportPath DerivedData/ipa
+          xcodebuild -exportArchive \
+            -archivePath DerivedData/Archive/CocoaHeadsNL.xcarchive \
+            -export0ptionsPlist provisioning/App-Store.plist \
+            -exportPath DerivedData/ipa
 
       # - name: Terraform Plan
       #   run: terraform plan
