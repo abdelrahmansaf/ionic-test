@@ -1,0 +1,51 @@
+
+name: Deploy
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+
+jobs:
+  build:
+    runs-on: mac0S-latest
+    steps:
+
+      - uses: actions/checkout@v1
+
+      - name: Dump file
+        uses: ls -R
+
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_11.3.app
+
+
+      - name: Xcode Version
+        run: /usr/bin/xcodebuild -version
+
+
+      - name: Build archive
+        run: |
+        xcodebuild -sdk iphoneos -project CocoaHeadsNL/CocoaHeadsNL.xcodeproj \
+        -configuration Release -scheme CocoaHeadsNL \
+        -derivedDataPath DerivedData \
+        -archivePath DerivedData/Archive/CocoaHeadsNL archive
+
+
+      - name: Export Archive
+        run: |
+        xcodebuild -exportArchive \
+        -archivePath DerivedData/Archive/CocoaHeadsNL.xcarchive \
+        -export0ptionsPlist provisioning/App-Store.plist \
+        -exportPath DerivedData/ipa
+
+      # - name: Terraform Plan
+      #   run: terraform plan
+
+      # - name: Terraform Init
+      #   run: terraform init
+
+      # - name: Terraform Plan
+      #   run: terraform plan

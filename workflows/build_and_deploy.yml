@@ -1,0 +1,32 @@
+name: Build and deploy Node.js
+
+on: [push]
+
+env:
+  AZURE_WEBAPP_NAME: FaultCodeMgt-Admin
+  AZURE_WEBAPP_PACKAGE_PATH: './dist/fcm-admin'
+
+jobs:
+  build_and_deploy:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: npm install, build
+        run: |
+          npm install
+          npm run build --prod
+
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v1
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_TOKENS }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
