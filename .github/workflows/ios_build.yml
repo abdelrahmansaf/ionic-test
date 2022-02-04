@@ -45,11 +45,11 @@ on: [push]
 
 env:
   AZURE_WEBAPP_NAME: FaultCodeMgt-Mobile
-  AZURE_WEBAPP_PACKAGE_PATH: './www'
+  AZURE_WEBAPP_PACKAGE_PATH: './ios'
 
 jobs:
   build_and_deploy:
-    runs-on: windows-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -62,12 +62,20 @@ jobs:
       - name: npm install, build
         run: |
           npm install
-          npm run build --prod
+          npm i @capacitor/ios
+          npx cap add ios
 
-      - name: 'Deploy to Azure WebApp'
-        uses: azure/webapps-deploy@v1
+      - name: Upload artifact Admin
+        uses: actions/upload-artifact@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_TOKENS }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          name: ios_build
+          path: ${{env.AZURE_WEBAPP_ADMIN_PATH}}
+
+
+      # - name: 'Deploy to Azure WebApp'
+      #   uses: azure/webapps-deploy@v1
+      #   with:
+      #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+      #     publish-profile: ${{ secrets.AZURE_WEBAPP_TOKENS }}
+      #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
