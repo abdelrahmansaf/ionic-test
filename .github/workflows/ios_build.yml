@@ -69,7 +69,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ios_build
-          path: ${{env.AZURE_WEBAPP_ADMIN_PATH}}
+          path: ./ios
 
 
       # - name: 'Deploy to Azure WebApp'
