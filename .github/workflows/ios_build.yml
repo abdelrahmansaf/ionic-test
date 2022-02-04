@@ -62,8 +62,10 @@ jobs:
       - name: npm install, build
         run: |
           npm install
+           npm run build --prod
           npm i @capacitor/ios --force
           npx cap add ios
+          npx capacitor sync ios
 
       - name: Upload artifact Admin
         uses: actions/upload-artifact@v2
