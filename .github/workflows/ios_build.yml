@@ -1,50 +1,73 @@
 
-name: Deploy
+# name: Deploy
 
-on:
-  push:
-    branches:
-    - master
+# on:
+#   push:
+#     branches:
+#     - master
 
+
+# jobs:
+#   build:
+#     runs-on: macos-latest
+#     steps:
+
+#       - uses: actions/checkout@v1
+
+#       - name: Dump file
+#         run: ls -R
+
+#       - name: Select Xcode
+#         run: sudo xcode-select -switch /Applications/Xcode_11.3.app
+
+
+#       - name: Xcode Version
+#         run: /usr/bin/xcodebuild -version
+
+
+#       - name: Build archive
+#         run: |
+#           xcodebuild -sdk iphoneos -project CocoaHeadsNL/CocoaHeadsNL.xcodeproj \
+#             -configuration Release -scheme CocoaHeadsNL \
+#             -derivedDataPath DerivedData \
+#             -archivePath DerivedData/Archive/CocoaHeadsNL archive
+
+
+#       - name: Export Archive
+#         run: |
+#           xcodebuild -exportArchive \
+#             -archivePath DerivedData/Archive/CocoaHeadsNL.xcarchive \
+#             -export0ptionsPlist provisioning/App-Store.plist \
+#             -exportPath DerivedData/ipa
+name: Build and deploy Node.js
+
+on: [push]
+
+env:
+  AZURE_WEBAPP_NAME: FaultCodeMgt-Mobile
+  AZURE_WEBAPP_PACKAGE_PATH: './www'
 
 jobs:
-  build:
-    runs-on: macos-latest
+  build_and_deploy:
+    runs-on: windows-latest
+
     steps:
+      - uses: actions/checkout@v2
 
-      - uses: actions/checkout@v1
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
 
-      - name: Dump file
-        run: ls -R
-
-      - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_11.3.app
-
-
-      - name: Xcode Version
-        run: /usr/bin/xcodebuild -version
-
-
-      - name: Build archive
+      - name: npm install, build
         run: |
-          xcodebuild -sdk iphoneos -project CocoaHeadsNL/CocoaHeadsNL.xcodeproj \
-            -configuration Release -scheme CocoaHeadsNL \
-            -derivedDataPath DerivedData \
-            -archivePath DerivedData/Archive/CocoaHeadsNL archive
+          npm install
+          npm run build --prod
 
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v1
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_TOKENS }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Export Archive
-        run: |
-          xcodebuild -exportArchive \
-            -archivePath DerivedData/Archive/CocoaHeadsNL.xcarchive \
-            -export0ptionsPlist provisioning/App-Store.plist \
-            -exportPath DerivedData/ipa
-
-      # - name: Terraform Plan
-      #   run: terraform plan
-
-      # - name: Terraform Init
-      #   run: terraform init
-
-      # - name: Terraform Plan
-      #   run: terraform plan
